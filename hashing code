@@ -1,0 +1,73 @@
+#include <stdio.h> 
+#include <string.h> 
+#define SIZE 10 
+struct Client { 
+char name[30]; 
+char phone[15]; 
+}; 
+struct Client hashTable[SIZE]; 
+int hash1(char *key) { 
+int sum = 0; 
+for (int i = 0; key[i] != '\0'; i++) 
+sum += key[i]; 
+return sum % SIZE; 
+} 
+int hash2(char *key) { 
+int sum = 0; 
+for (int i = 0; key[i] != '\0'; i++) 
+sum += key[i]; 
+return 7 - (sum % 7); 
+} 
+void insert(char *name, char *phone, int method) { 
+int index = hash1(name); 
+    int i = 0; 
+    while (strlen(hashTable[index].name) != 0) { 
+        if (method == 1) 
+            index = (index + 1) % SIZE;             // Linear 
+        else if (method == 2) 
+            index = (index + i * i) % SIZE;         // Quadratic 
+        else 
+            index = (index + i * hash2(name)) % SIZE; // Double 
+        i++; 
+    } 
+    strcpy(hashTable[index].name, name); 
+    strcpy(hashTable[index].phone, phone); 
+} 
+ 
+void search(char *name) { 
+    int index = hash1(name); 
+    for (int i = 0; i < SIZE; i++) { 
+        if (strcmp(hashTable[index].name, name) == 0) { 
+            printf("Phone: %s\n", hashTable[index].phone); 
+            return; 
+        } 
+        index = (index + 1) % SIZE; 
+    } 
+    printf("Client not found\n"); 
+} 
+ 
+void display() { 
+    for (int i = 0; i < SIZE; i++) { 
+        if (strlen(hashTable[i].name) != 0) 
+            printf("%d: %s - %s\n", i, hashTable[i].name, hashTable[i].phone); 
+        else 
+printf("%d: Empty\n", i); 
+} 
+} 
+int main() { 
+int n, method; 
+char name[30], phone[15]; 
+printf("Choose method:\n1.Linear\n2.Quadratic\n3.Double\nEnter: "); 
+scanf("%d", &method); 
+printf("Enter number of clients: "); 
+scanf("%d", &n); 
+for (int i = 0; i < n; i++) { 
+printf("Enter name and phone: "); 
+scanf("%s %s", name, phone); 
+insert(name, phone, method); 
+} 
+display(); 
+printf("Search name: "); 
+scanf("%s", name); 
+search(name); 
+return 0;
