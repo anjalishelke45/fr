@@ -1,0 +1,142 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <conio.h> 
+ 
+struct NODE { 
+    int data; 
+    struct NODE* left; 
+    struct NODE* right;}; 
+ 
+struct NODE* newNODE(int value) { 
+    struct NODE* newNode = (struct NODE*)malloc(sizeof(struct NODE)); 
+    newNode->data = value; 
+    newNode->left = NULL; 
+    newNode->right = NULL; 
+    return newNode;} 
+ 
+struct NODE* insert(struct NODE* root, int value) { 
+    struct NODE *p; 
+    if (root == NULL) { 
+    return newNODE(value);  } 
+ 
+    p = root; 
+    while (1) { 
+    if (value <= p->data) { 
+        if (p->left == NULL) { 
+        p->left = newNODE(value); 
+        break;} 
+        else { 
+        p = p->left;}  }  
+else { 
+        if (p->right == NULL) { 
+        p->right = newNODE(value); 
+        break; 
+        } else { 
+        p = p->right;  }  }  } 
+    return root;} 
+ 
+int height(struct NODE *root) { 
+    int htL, htR; 
+    if (root == NULL) 
+    return 0; 
+ 
+    htL = height(root->left); 
+    htR = height(root->right); 
+    return (htL > htR ? htL : htR) + 1;} 
+ 
+int findMin(struct NODE *root) { 
+    struct NODE* p; 
+    if (root == NULL) { 
+    printf("TREE is empty\n"); 
+    return -1; } 
+    p = root; 
+    while (p->left != NULL) { 
+    p = p->left;  } 
+    return p->data;} 
+ 
+void mirror(struct NODE *root) { 
+    struct NODE *temp; 
+    if (root == NULL) return; 
+ 
+    temp = root->left; 
+    root->left = root->right; 
+    root->right = temp; 
+ 
+    mirror(root->left); 
+    mirror(root->right);} 
+ 
+struct NODE* search(struct NODE *root, int key) { 
+    struct NODE *p = root; 
+    while (p != NULL) { 
+    if (key == p->data) return p; 
+    else if (key < p->data) p = p->left; 
+    else p = p->right; } 
+    return NULL;} 
+ 
+void inorder(struct NODE *root) { 
+    if (root == NULL) return; 
+    inorder(root->left); 
+    printf("%d ", root->data); 
+    inorder(root->right);} 
+ 
+int main() { 
+    int choice, value; 
+    struct NODE *root = NULL; 
+    struct NODE *result; 
+ 
+    clrscr(); 
+ 
+    while (1) { 
+    printf("\n1. Insert new node\n"); 
+    printf("2. Find number of nodes in longest path (height)\n"); 
+    printf("3. Find minimum data value\n"); 
+    printf("4. Mirror the tree\n"); 
+    printf("5. Search a value\n"); 
+    printf("6. Display inorder traversal\n"); 
+    printf("7. Exit\n"); 
+    printf("Enter your choice: "); 
+    scanf("%d", &choice); 
+ 
+    switch (choice) { 
+    case 1: 
+        printf("Enter value to insert: "); 
+        scanf("%d", &value); 
+        root = insert(root, value); 
+        break; 
+ 
+    case 2: 
+        printf("Longest path (height): %d\n", height(root)); 
+        break; 
+ 
+    case 3: 
+        value = findMin(root); 
+        if (value != -1) 
+        printf("Minimum value: %d\n", value); 
+        break; 
+ 
+    case 4: 
+        mirror(root); 
+        printf("Tree mirrored\n"); 
+        break; 
+ 
+    case 5: 
+        printf("Enter value to search: "); 
+        scanf("%d", &value); 
+        result = search(root, value); 
+        if (result != NULL) 
+        printf("Value %d found\n", value); 
+        else 
+        printf("Value %d not found\n", value); 
+        break; 
+ 
+    case 6: 
+        printf("Inorder traversal: "); 
+        inorder(root); 
+        printf("\n"); 
+break; 
+case 7: 
+exit(0); 
+default: 
+printf("Invalid choice\n");}  } 
+getch(); 
+return 0;}
