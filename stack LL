@@ -1,0 +1,45 @@
+#include<stdio.h> 
+#include<conio.h> 
+int push(int top, int size){ 
+if(top>=size-1){ 
+printf("stack is full"); 
+return top;} 
+top++; 
+return top;} 
+int pop(int top){ 
+if(top<=-1) 
+printf("stack is empty"); 
+else 
+top--; 
+return top;} 
+int main(){ 
+int stack[100],x,top,size,choice,i; 
+top=-1; 
+clrscr(); 
+printf("enter size of stack:"); 
+scanf("%d",&size); 
+while(1){ 
+printf("\n1 To push\n2 To pop\n3 To display\n4 Exit\n"); 
+scanf("%d",&choice); 
+switch(choice){ 
+case 1: 
+top=push(top,size); 
+printf("Enter element to push "); 
+scanf("%d",&x); 
+stack[top]=x; 
+break; 
+case 2: 
+printf("deleted data is: %d",stack[top]); 
+top=pop(top); 
+break; 
+case 3: 
+for(i=top;i>=0;i--){ 
+printf("%d ",stack[i]);} 
+break; 
+case 4: 
+exit(0); 
+break; 
+default: 
+printf("enter valid num");}} 
+getch(); 
+return 0;}
