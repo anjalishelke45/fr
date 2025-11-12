@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<conio.h>
+
+int binary(int a[],int n, int find){
+int first=0,last=n-1,mid;
+while(first<=last){
+mid=(first+last)/2;
+if(a[mid]==find)
+return mid;
+else if(a[mid]<find)
+first=mid+1;
+else
+last=mid-1;}
+return-1;
+}
+int main(){
+int a[100],n,find,i;
+int result;
+clrscr();
+printf("no of student attend program ");
+scanf(" %d",&n);
+printf(" roll no of students in assending way ");
+for(i=0;i<n;i++){
+scanf(" %d",&a[i]);}
+printf("roll no which need to find ");
+scanf("%d",&find);
+result=binary(a,n,find);
+
+if(result== -1){
+printf("student not present");}
+else{
+printf("student was present");}
+
+getch();
+return 0;}
+
+
+
+
+
