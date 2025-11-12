@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100
+// Structure to represent an edge
+struct Edge {
+ int u, v, weight;
+};
+// Disjoint Set data structure for Union-Find
+int parent[MAX], rankArr[MAX];
+// Function to initialize the disjoint-set
+void initializeSet(int n) {
+ for (int i = 0; i < n; i++) {
+ parent[i] = i;
+ rankArr[i] = 0;
+ }
+}
+// Find function with path compression
+int findSet(int i) {
+ if (parent[i] != i)
+ parent[i] = findSet(parent[i]);
+ return parent[i];
+}
+// Union function with union by rank
+void unionSet(int u, int v) {
+ int rootU = findSet(u);
+ int rootV = findSet(v);
+ if (rootU != rootV) {
+ if (rankArr[rootU] < rankArr[rootV]) {
+ parent[rootU] = rootV;
+ } else if (rankArr[rootU] > rankArr[rootV]) {
+ parent[rootV] = rootU;
+ } else {
+ parent[rootV] = rootU;
+ rankArr[rootU]++;
+ }
+ }
+}
+// Comparison function for sorting edges by weight
+int compareEdges(const void *a, const void *b) {
+ return ((struct Edge *)a)->weight - ((struct Edge *)b)->weight;
+}
+// Kruskalâ€™s Algorithm to find the Minimum Spanning Tree
+void Kruskal(struct Edge edges[], int e, int n) {
+ int mstWeight = 0;
+ int edgesIncluded = 0;
+ // Step 1: Sort all edges based on weight
+ qsort(edges, e, sizeof(struct Edge), compareEdges);
+ // Step 2: Initialize disjoint set
+ initializeSet(n);
+ printf("\nEdges in the Minimum Spanning Tree:\n");
+ // Step 3: Process edges
+ for (int i = 0; i < e && edgesIncluded < n - 1; i++) {
+ int u = edges[i].u;
+ int v = edges[i].v;
+ int weight = edges[i].weight;
+ int rootU = findSet(u);
+ int rootV = findSet(v);
+ // Include edge if it doesnâ€™t cause a cycle
+ if (rootU != rootV) {
+ printf("Office %d connected to Office %d with cost %d\n", u, v, weight);
+ mstWeight += weight;
+ unionSet(rootU, rootV);
+ edgesIncluded++;
+ }
+ }
+ if (edgesIncluded == n - 1)
+ printf("Minimum cost to connect all offices = %d\n", mstWeight);
+ else
+ printf("There is no way to connect all offices.\n");
+}
+int main() {
+ int n, e, choice;
+ struct Edge edges[MAX];
+ printf("Enter number of offices (cities): ");
+ scanf("%d", &n);
+ printf("Enter number of possible connections (edges): ");
+ scanf("%d", &e);
+ printf("Enter connections and their costs:\n");
+ for (int i = 0; i < e; i++) {
+ printf("Enter two offices connected by edge %d (u v): ", i + 1);
+ scanf("%d %d", &edges[i].u, &edges[i].v);
+ printf("Enter the cost of connecting office %d and office %d: ", edges[i].u, edges[i].v);
+ scanf("%d", &edges[i].weight);
+ }
+ do {
+ printf("\nChoose an option:\n");
+ printf("1. Calculate Minimum Spanning Tree (MST) using Kruskalâ€™s Algorithm\n");
+ printf("2. Exit\n");
+ printf("Enter your choice: ");
+ scanf("%d", &choice);
+ switch (choice) {
+ case 1:
+ Kruskal(edges, e, n);
+ break;
+ case 2:
+ printf("Exiting program.\n");
+ break;
+ default:
+ printf("Invalid choice. Please try again.\n");
+ }
+ } while (choice != 2);
+ return 0;
+}
