@@ -1,0 +1,32 @@
+#include<stdio.h> 
+#include<conio.h> 
+int select(float a[], int size) { 
+int min,i,j,temp; 
+for(i=0;i<size-1;i++){ 
+min=i; 
+for(j=i+1;j<size;j++){ 
+if(a[j]<a[min]){ 
+min=j;} 
+} 
+temp=a[i]; 
+a[i]=a[min]; 
+a[min]=temp;} 
+return 0;} 
+int main() { 
+float a[100]; 
+int i,size; 
+clrscr(); 
+printf("Enter no of students "); 
+scanf(" %d",&size); 
+printf("Enter the percentage of students\n"); 
+for(i=0;i<size;i++){ 
+scanf(" %f",&a[i]);} 
+select(a,size); 
+printf("percentage in assending order is\n"); 
+for(i=0;i<size;i++){ 
+printf(" %.2f,",a[i]);} 
+printf("\n Top 5 student got \n"); 
+for(i=size-1;i>size-6;i--){ 
+printf(" %.2f,",a[i]);} 
+getch(); 
+return 0;}
