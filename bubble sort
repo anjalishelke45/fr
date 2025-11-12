@@ -1,0 +1,29 @@
+#include<stdio.h> 
+#include<conio.h> 
+ 
+void bubble(double a[],int size){ 
+int i,j; 
+float temp; 
+ 
+for(i=0;i<size;i++){ for(j=0;j<size-1-i;j++){ if(a[j]>a[j+1]){ temp=a[j]; a[j]=a[j+1]; a[j+1]=temp; 
+} 
+} 
+} 
+} 
+int main() { double a[100]; 
+int size,i; 
+ 
+clrscr(); 
+ 
+printf("No of students "); scanf(" %d",&size); printf("enter marks of students \n"); for(i=0;i<size;i++){ scanf(" %lf",&a[i]);} 
+bubble(a,size); printf("percentage in assending order is\n"); for(i=0;i<size;i++){ 
+ 
+printf(" %.2lf,",a[i]);} 
+ 
+printf("\n Top 5 student got \n"); 
+ 
+for(i=size-1;i>size-6;i--){ printf(" %.2lf,",a[i]);} getch(); return 0;} 
+ 
+ 
+ 
+ 
