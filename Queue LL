@@ -1,0 +1,57 @@
+#include<stdio.h> 
+#include<stdlib.h> 
+struct NODE{ 
+int data; 
+struct NODE *next;}; 
+struct NODE *head=NULL; 
+struct NODE *f,*r,*p,*q; 
+void enque(int x){ 
+if(head==NULL){ 
+head= (struct NODE*)malloc(sizeof(struct NODE)); 
+head->data=x; 
+head->next=NULL; 
+f=r=head;} 
+else{ 
+p=(struct NODE*)malloc(sizeof(struct NODE)); 
+p->data=x; 
+p->next=NULL; 
+r->next=p; 
+r=p;}} 
+void dequeue(){ 
+if(head==NULL){ 
+printf("Queue is empty"); 
+return;} 
+printf("The deleted job is %d",f->data); 
+head=head->next; 
+free(f); 
+f=head;} 
+void display(){ 
+q=head; 
+while(q!=NULL){ 
+printf(" %d",q->data); 
+q=q->next;}} 
+int main(){ 
+int x,choice; 
+clrscr(); 
+while(1){ 
+printf("\n1 Add job\n2 Delete job\n3 DIsplay\n4 Exit\n"); 
+scanf("%d",&choice); 
+switch(choice){ 
+case 1: 
+printf("Enter your job ID:"); 
+scanf(" %d",&x); 
+enque(x); 
+break; 
+case 2: 
+dequeue(); 
+break; 
+case 3: 
+display(); 
+break; 
+case 4: 
+exit(0); 
+break; 
+default: 
+printf("Enter valid input");}} 
+getch(); 
+return 0;}
