@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <conio.h>
+#define MAX 5
+
+int queue[MAX];
+int front = -1, rear = -1;
+
+void add_order()
+{
+    int item;
+    if(rear == MAX - 1)
+        printf("Order queue is full. Cannot accept more orders.\n");
+    else
+    {
+        printf("Enter order number: ");
+        scanf("%d", &item);
+        if(front == -1)
+            front = 0;
+        rear++;
+        queue[rear] = item;
+        printf("Order %d added successfully.\n", item);
+    }
+}
+
+void serve_order()
+{
+    if(front == -1 || front > rear)
+        printf("No pending orders to serve.\n");
+    else
+    {
+        printf("Order %d served successfully.\n", queue[front]);
+        front++;
+    }
+}
+
+void display_orders()
+{
+    int i;
+    if(front == -1 || front > rear)
+        printf("No current orders in queue.\n");
+    else
+    {
+        printf("Current orders in queue:\n");
+        for(i = front; i <= rear; i++)
+            printf("%d ", queue[i]);
+        printf("\n");
+    }
+}
+
+void main()
+{
+    int ch;
+    clrscr();
+    do
+    {
+        printf("\n--- Pizza Parlour Order System ---\n");
+        printf("1. Add Order\n2. Serve Order\n3. Display Orders\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1: add_order(); break;
+            case 2: serve_order(); break;
+            case 3: display_orders(); break;
+            case 4: printf("Exiting..."); break;
+            default: printf("Invalid choice.\n");
+        }
+    } while(ch != 4);
+    getch();
+}
