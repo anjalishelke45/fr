@@ -1,0 +1,149 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left, *right;
+};
+
+struct node* createNode(int val)
+{
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = val;
+    newnode->left = newnode->right = NULL;
+    return newnode;
+}
+
+struct node* insert(struct node* root, int val)
+{
+    if(root == NULL)
+        return createNode(val);
+    if(val < root->data)
+        root->left = insert(root->left, val);
+    else if(val > root->data)
+        root->right = insert(root->right, val);
+    return root;
+}
+
+int height(struct node* root)
+{
+    int lh, rh;
+    if(root == NULL)
+        return 0;
+    lh = height(root->left);
+    rh = height(root->right);
+    if(lh > rh)
+        return lh + 1;
+    else
+        return rh + 1;
+}
+
+int findMin(struct node* root)
+{
+    while(root->left != NULL)
+        root = root->left;
+    return root->data;
+}
+
+void mirror(struct node* root)
+{
+    struct node* temp;
+    if(root == NULL)
+        return;
+    mirror(root->left);
+    mirror(root->right);
+    temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+}
+
+void inorder(struct node* root)
+{
+    if(root != NULL)
+    {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+struct node* search(struct node* root, int key)
+{
+    if(root == NULL || root->data == key)
+        return root;
+    if(key < root->data)
+        return search(root->left, key);
+    else
+        return search(root->right, key);
+}
+
+void main()
+{
+    struct node* root = NULL;
+    int n, i, val, key, ch;
+    clrscr();
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    printf("Enter values: ");
+    for(i = 0; i < n; i++)
+    {
+        scanf("%d", &val);
+        root = insert(root, val);
+    }
+
+    do
+    {
+        printf("\n\n--- Binary Search Tree Menu ---\n");
+        printf("1. Insert Node\n2. Display Inorder\n3. Height of Tree\n4. Minimum Value\n5. Mirror Tree\n6. Search Value\n7. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+
+        switch(ch)
+        {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &val);
+                root = insert(root, val);
+                break;
+
+            case 2:
+                printf("Inorder Traversal: ");
+                inorder(root);
+                break;
+
+            case 3:
+                printf("Height of tree: %d", height(root));
+                break;
+
+            case 4:
+                printf("Minimum value: %d", findMin(root));
+                break;
+
+            case 5:
+                mirror(root);
+                printf("Tree mirrored successfully!");
+                break;
+
+            case 6:
+                printf("Enter value to search: ");
+                scanf("%d", &key);
+                if(search(root, key))
+                    printf("Value found in the tree.");
+                else
+                    printf("Value not found.");
+                break;
+
+            case 7:
+                printf("Exiting...");
+                break;
+
+            default:
+                printf("Invalid choice!");
+        }
+    } while(ch != 7);
+
+    getch();
+}
